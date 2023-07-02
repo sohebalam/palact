@@ -181,134 +181,9 @@ class _MapHomeState extends State<MapHome> {
       bottomSheet: Container(
         padding: const EdgeInsets.all(10.0),
         color: Colors.white,
-        height: MediaQuery.of(context).size.height / 3,
+        height: MediaQuery.of(context).size.height / 4,
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    final DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: _selectedDateTimeStart,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(Duration(days: 365)),
-                    );
-
-                    if (picked != null) {
-                      final TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime:
-                            TimeOfDay.fromDateTime(_selectedDateTimeStart),
-                      );
-
-                      if (pickedTime != null) {
-                        setState(() {
-                          _selectedDateTimeStart = DateTime(
-                            picked.year,
-                            picked.month,
-                            picked.day,
-                            pickedTime.hour,
-                            pickedTime.minute,
-                          );
-                          _selectedDateTimeEnd =
-                              _selectedDateTimeStart.add(Duration(hours: 1));
-                        });
-                      }
-                    }
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        'Start',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              DateFormat('hh:mm a dd/MM/yy')
-                                  .format(_selectedDateTimeStart),
-                            ),
-                            Icon(Icons.keyboard_arrow_down),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    final DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: _selectedDateTimeEnd,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(Duration(days: 365)),
-                    );
-
-                    if (picked != null) {
-                      final TimeOfDay? pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime:
-                            TimeOfDay.fromDateTime(_selectedDateTimeEnd),
-                      );
-
-                      if (pickedTime != null) {
-                        setState(() {
-                          _selectedDateTimeEnd = DateTime(
-                            picked.year,
-                            picked.month,
-                            picked.day,
-                            pickedTime.hour,
-                            pickedTime.minute,
-                          );
-                        });
-                      }
-                    }
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        'End',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              DateFormat('hh:mm a dd/MM/yy')
-                                  .format(_selectedDateTimeEnd),
-                            ),
-                            Icon(Icons.keyboard_arrow_down),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
             const SizedBox(height: 16.0),
             DropdownButtonFormField<String>(
               value: _selectedOption,
@@ -370,12 +245,13 @@ Future<List<List<dynamic>>> filterBookings(List<List<dynamic>> nearestSpaces,
   List<List<dynamic>> filteredResults = [];
 
   for (var space in nearestSpaces) {
-    final matchingBookings = bookingsSnapshot.docs.where((booking) =>
-        booking.data()['p_id'] == space[0] &&
-        booking.data()['start_date_time'].toDate().isBefore(endDateTime) &&
-        booking.data()['end_date_time'].toDate().isAfter(startDateTime));
+    final spaceDoc = await FirebaseFirestore.instance
+        .collection('parking_spaces')
+        .doc(space[0])
+        .get();
+    final isPublished = spaceDoc.data()?['isPublished'] ?? false;
 
-    if (matchingBookings.isEmpty) {
+    if (isPublished) {
       filteredResults.add(space);
     }
   }
