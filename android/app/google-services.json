@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "217599382834",
+    "project_id": "palestineaction-33e71",
+    "storage_bucket": "palestineaction-33e71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217599382834:android:e0ee95fdc5a0730e26332b",
+        "android_client_info": {
+          "package_name": "com.example.palaction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217599382834-5qpse8g3sp4kik8s9td19tgrtt87bkmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpXfBnJM_ZKKj8sFDbjY6GEKgtn1FCtRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217599382834-5qpse8g3sp4kik8s9td19tgrtt87bkmf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "217599382834-32t84nt74u9fmhdlimlluembo30n1ita.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sparepark"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217599382834:android:324e84e4c147570e26332b",
+        "android_client_info": {
+          "package_name": "com.spare_park.sparepark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217599382834-5qpse8g3sp4kik8s9td19tgrtt87bkmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpXfBnJM_ZKKj8sFDbjY6GEKgtn1FCtRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217599382834-5qpse8g3sp4kik8s9td19tgrtt87bkmf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "217599382834-32t84nt74u9fmhdlimlluembo30n1ita.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sparepark"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
