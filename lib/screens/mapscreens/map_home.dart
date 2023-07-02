@@ -124,8 +124,12 @@ class _MapHomeState extends State<MapHome> {
         _searchTerm = value;
       });
 
-      PlacesAutocompleteResponse response =
-          await _placesApiClient.autocomplete(_searchTerm);
+      PlacesAutocompleteResponse response = await _placesApiClient.autocomplete(
+        _searchTerm,
+        components: [
+          Component(Component.country, "uk")
+        ], // Add country filter for the UK
+      );
 
       setState(() {
         _isLoading = false;
@@ -239,9 +243,6 @@ class _MapHomeState extends State<MapHome> {
 
 Future<List<List<dynamic>>> filterBookings(List<List<dynamic>> nearestSpaces,
     DateTime startDateTime, DateTime endDateTime) async {
-  final bookingsSnapshot =
-      await FirebaseFirestore.instance.collection('bookings').get();
-
   List<List<dynamic>> filteredResults = [];
 
   for (var space in nearestSpaces) {
