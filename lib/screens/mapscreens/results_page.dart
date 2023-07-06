@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:palaction/screens/auth/login.dart';
@@ -13,6 +14,8 @@ import 'package:palaction/shared/auth_service.dart';
 import 'package:palaction/shared/functions.dart';
 import 'package:palaction/shared/widgets/app_bar.dart';
 import 'package:palaction/shared/widgets/drawer.dart';
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:fluttericon/font_awesome_icons.dart';
 
 class ResultsPage extends StatefulWidget {
   final LatLng location;
@@ -154,7 +157,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('results: ${widget.results}');
+    // print('results: ${widget.results}');
     final authService = Provider.of<AuthService>(context);
     final isLoggedInStream = authService.user!.map((user) => user != null);
     return Scaffold(
@@ -191,6 +194,17 @@ class _ResultsPageState extends State<ResultsPage> {
                     final result = filteredResults[index];
                     final lat = result[1];
                     final lng = result[2];
+
+                    DateTime startDate = result[
+                        8]; // Assuming result[8] contains the start DateTime object
+                    DateTime endDate = result[
+                        9]; // Assuming result[9] contains the end DateTime object
+
+                    // Format the dates to the desired format
+                    String startFormattedDate =
+                        DateFormat('HH:mm, dd/MM/yyyy').format(startDate);
+                    String endFormattedDate =
+                        DateFormat('HH:mm, dd/MM/yyyy').format(endDate);
                     return Card(
                       child: ListTile(
                         title: Text("${(result[3].toString())}"),
@@ -199,6 +213,50 @@ class _ResultsPageState extends State<ResultsPage> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            SizedBox(
+                              width: 80,
+                              child: TextButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Case Dates'),
+                                      content: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                              'Start Date & Time: ${startFormattedDate}'),
+                                          Text(
+                                              'End Date & Time: ${endFormattedDate}'),
+                                          // Add a calendar widget here if needed
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('Close'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      FontAwesome5.calendar_check,
+                                      size: 22,
+                                    ),
+                                    SizedBox(height: 6),
+                                    Text("Date & Times",
+                                        style: TextStyle(fontSize: 10)),
+                                  ],
+                                ),
+                              ),
+                            ),
                             SizedBox(
                               width: 80,
                               child: TextButton(
@@ -232,7 +290,6 @@ class _ResultsPageState extends State<ResultsPage> {
                               width: 80,
                               child: TextButton(
                                 onPressed: () {
-                                  print('Book');
                                   if (_currentUser == null) {
                                     Navigator.push(
                                       context,

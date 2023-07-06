@@ -50,8 +50,6 @@ class _MapHomeState extends State<MapHome> {
 
     List<List<dynamic>> results = [];
     for (var space in nearestSpaces) {
-      print('spaces:');
-      print(space.toJson());
       results.add([
         space.p_id,
         space.latitude,
@@ -61,13 +59,12 @@ class _MapHomeState extends State<MapHome> {
         space.address,
         space.p_image,
         space.u_id,
+        space.startdatetime,
+        space.enddatetime,
       ]);
     }
 
     List<List<dynamic>> filteredResults = await filterBookings(results);
-
-    print('filteredResults ');
-    print(filteredResults);
 
     Navigator.push(
       context,

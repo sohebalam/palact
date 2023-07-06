@@ -152,6 +152,20 @@ class _RegisterParkingSpaceState extends State<RegisterParkingSpace> {
           final longitude = postcodeData['result']['longitude'];
           final latitude = postcodeData['result']['latitude'];
 
+          // Check if start datetime is after end datetime
+          if (_selectedDateTimeStart.isAfter(_selectedDateTimeEnd)) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Start datetime should be before end datetime'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+            setState(() {
+              _isLoading = false; // Reset loading state
+            });
+            return;
+          }
+
           final id =
               FirebaseFirestore.instance.collection('parking_spaces').doc().id;
           final RegisterParkingSpace = CarParkSpaceModel(
